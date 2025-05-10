@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivi du Rituel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      margin-bottom: 2rem;
+    }
+    .bar-container {
+      width: 80%;
+      margin-bottom: 2rem;
+    }
+    .label {
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .progress-wrapper {
+      background: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 25px;
+      margin-bottom: 0.5rem;
+    }
+    .progress {
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+    .stabilite {
+      background: linear-gradient(to right, #00ff88, #00cc66);
+    }
+    .barriere {
+      background: linear-gradient(to right, #00f2ff, #0077ff);
+    }
+    .protection {
+      background: linear-gradient(to right, #d46fff, #7a00cc);
+    }
+    .slider {
+      width: 100%;
+    }
+  </style>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDkVPQjF88jSKzRro3oaYJCi--12-hEMX4",
+      authDomain: "rituel-612d3.firebaseapp.com",
+      projectId: "rituel-612d3",
+      storageBucket: "rituel-612d3.firebasestorage.app",
+      messagingSenderId: "79310623375",
+      appId: "1:79310623375:web:0655191982adcc8dbc96fa",
+      measurementId: "G-49X39CCPBN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const sliderIds = ["stabilite", "barriere", "protection"];
+
+    async function updateBar(value, id) {
+      document.getElementById('bar-' + id).style.width = value + '%';
+      document.getElementById('value-' + id).textContent = value;
+      await setDoc(doc(db, "barres", "etat"), {
+        [id]: parseInt(value)
+      }, { merge: true });
+    }
+
+    const unsubscribe = onSnapshot(doc(db, "barres", "etat"), (docSnap) => {
+      const data = docSnap.data();
+      if (!data) return;
+      sliderIds.forEach(id => {
+        if (data[id] !== undefined) {
+          document.getElementById('bar-' + id).style.width = data[id] + '%';
+          document.getElementById('value-' + id).textContent = data[id];
+          document.querySelector(`input[oninput*="${id}"]`).value = data[id];
+        }
+      });
+    });
+
+    window.updateBar = updateBar;
+  </script>
+</head>
+<body>
+  <h1>Suivi du Rituel</h1>
+
+  <div class="bar-container">
+    <div class="label">🔮 Stabilité du rituel: <span id="value-stabilite">100</span>/100</div>
+    <div class="progress-wrapper">
+      <div class="progress stabilite" id="bar-stabilite" style="width: 100%"></div>
+    </div>
+    <input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'stabilite')">
+  </div>
+
+  <div class="bar-container">
+    <div class="label">🛡️ Résistance de la barrière externe: <span id="value-barriere">100</span>/100</div>
+    <div class="progress-wrapper">
+      <div class="progress barriere" id="bar-barriere" style="width: 100%"></div>
+    </div>
+    <input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'barriere')">
+  </div>
+
+  <div class="bar-container">
+    <div class="label">🌀 Résistance de la protection: <span id="value-protection">100</span>/100</div>
+    <div class="progress-wrapper">
+      <div class="progress protection" id="bar-protection" style="width: 100%"></div>
+    </div>
+    <input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'protection')">
+  </div>
+</body>
+</html>

@@ -69,18 +69,23 @@
     const sliderIds = ["stabilite", "barriere", "protection"];
 
     async function updateBar(value, id) {
+      // Met à jour la barre dans l'UI
       document.getElementById('bar-' + id).style.width = value + '%';
       document.getElementById('value-' + id).textContent = value;
+
+      // Envoie la nouvelle valeur dans Firestore
       await setDoc(doc(db, "barres", "etat"), {
         [id]: parseInt(value)
       }, { merge: true });
     }
 
+    // Écoute les mises à jour en temps réel dans Firestore
     const unsubscribe = onSnapshot(doc(db, "barres", "etat"), (docSnap) => {
       const data = docSnap.data();
       if (!data) return;
       sliderIds.forEach(id => {
         if (data[id] !== undefined) {
+          // Met à jour la barre et le slider
           document.getElementById('bar-' + id).style.width = data[id] + '%';
           document.getElementById('value-' + id).textContent = data[id];
           document.querySelector(`input[oninput*="${id}"]`).value = data[id];
@@ -88,12 +93,14 @@
       });
     });
 
+    // Expose la fonction pour les sliders
     window.updateBar = updateBar;
   </script>
 </head>
 <body>
   <h1>Suivi du Rituel</h1>
 
+  <!-- Stabilité -->
   <div class="bar-container">
     <div class="label">🔮 Stabilité du rituel: <span id="value-stabilite">100</span>/100</div>
     <div class="progress-wrapper">
@@ -102,6 +109,7 @@
     <input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'stabilite')">
   </div>
 
+  <!-- Barrière -->
   <div class="bar-container">
     <div class="label">🛡️ Résistance de la barrière externe: <span id="value-barriere">100</span>/100</div>
     <div class="progress-wrapper">
@@ -110,6 +118,7 @@
     <input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'barriere')">
   </div>
 
+  <!-- Protection -->
   <div class="bar-container">
     <div class="label">🌀 Résistance de la protection: <span id="value-protection">100</span>/100</div>
     <div class="progress-wrapper">

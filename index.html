@@ -88,7 +88,7 @@
           // Met à jour la barre et le slider
           document.getElementById('bar-' + id).style.width = data[id] + '%';
           document.getElementById('value-' + id).textContent = data[id];
-          document.querySelector(`input[oninput*="${id}"]`).value = data[id];
+          //document.querySelector(`input[oninput*="${id}"]`).value = data[id];
         }
       });
     });
@@ -102,11 +102,11 @@
 
   <!-- Stabilité -->
   <div class="bar-container">
-    <div class="label">🔮 Stabilité du rituel: <span id="value-stabilite">100</span>/100</div>
+    <div class="label"><img style="width: 15px; height: 15px; object-fit: cover;" src="https://i.ibb.co/GQXG1Mrg/rituel.gif" /> Stabilité du rituel: <span id="value-stabilite">100</span>/100</div>
     <div class="progress-wrapper">
       <div class="progress stabilite" id="bar-stabilite" style="width: 100%"></div>
     </div>
-    <input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'stabilite')">
+    <!--<input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'stabilite')">-->
   </div>
 
   <!-- Barrière -->
@@ -115,7 +115,7 @@
     <div class="progress-wrapper">
       <div class="progress barriere" id="bar-barriere" style="width: 100%"></div>
     </div>
-    <input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'barriere')">
+    <!--<input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'barriere')">-->
   </div>
 
   <!-- Protection -->
@@ -124,7 +124,7 @@
     <div class="progress-wrapper">
       <div class="progress protection" id="bar-protection" style="width: 100%"></div>
     </div>
-    <input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'protection')">
+    <!--<input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'protection')">-->
   </div>
 </body>
 </html>

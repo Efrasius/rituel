@@ -66,7 +66,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const sliderIds = ["stabilite", "barriere", "protection", "monstre"];
+    const sliderIds = ["stabilite", "barriere", "protection", "monstre", "monstre2"];
 
     async function updateBar(value, id) {
       // Met à jour la barre dans l'UI
@@ -91,6 +91,8 @@
           //document.querySelector(`input[oninput*="${id}"]`).value = data[id];
         } else if (data[id] !== undefined && id == "monstre") {
           document.getElementById('monstreImg').src = data[id];
+        } else if (data[id] !== undefined && id == "monstre2") {
+          document.getElementById('monstreImg2').src = data[id];
         }
       });
     });
@@ -131,6 +133,7 @@
 
   <div class="bar-container">
     <img src="" id="monstreImg" />
+    <img src="" id="monstreImg2" />
   </div>
 </body>
 </html>

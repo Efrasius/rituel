@@ -84,11 +84,13 @@
       const data = docSnap.data();
       if (!data) return;
       sliderIds.forEach(id => {
-        if (data[id] !== undefined) {
+        if (data[id] !== undefined && id !== "monstre") {
           // Met à jour la barre et le slider
           document.getElementById('bar-' + id).style.width = data[id] + '%';
           document.getElementById('value-' + id).textContent = data[id];
           //document.querySelector(`input[oninput*="${id}"]`).value = data[id];
+        } else if (data[id] !== undefined && id == "monstre") {
+          document.getElementById('monstreImg').src = data[id];
         }
       });
     });
@@ -102,7 +104,7 @@
 
   <!-- Stabilité -->
   <div class="bar-container">
-    <div class="label"><img style="width: 15px; height: 15px; object-fit: cover;" src="https://i.ibb.co/GQXG1Mrg/rituel.gif" /> Stabilité du rituel: <span id="value-stabilite">100</span>/100</div>
+    <div class="label"><img style="width: 30px; height: 30px; object-fit: cover;" src="https://i.ibb.co/GQXG1Mrg/rituel.gif" /> Stabilité du rituel: <span id="value-stabilite">100</span>/100</div>
     <div class="progress-wrapper">
       <div class="progress stabilite" id="bar-stabilite" style="width: 100%"></div>
     </div>
@@ -111,7 +113,7 @@
 
   <!-- Barrière -->
   <div class="bar-container">
-    <div class="label">🛡️ Résistance de la barrière externe: <span id="value-barriere">100</span>/100</div>
+    <div class="label"><img style="width: 30px; height: 30px; object-fit: cover;" src="https://i.ibb.co/M5Py5pLd/tank.png" /> Résistance de la barrière externe: <span id="value-barriere">100</span>/100</div>
     <div class="progress-wrapper">
       <div class="progress barriere" id="bar-barriere" style="width: 100%"></div>
     </div>
@@ -120,11 +122,15 @@
 
   <!-- Protection -->
   <div class="bar-container">
-    <div class="label">🌀 Résistance de la protection: <span id="value-protection">100</span>/100</div>
+    <div class="label"><img style="width: 30px; height: 30px; object-fit: cover;" src="https://i.ibb.co/ds8xNYn8/magic.png" /> Résistance de la protection: <span id="value-protection">100</span>/100</div>
     <div class="progress-wrapper">
       <div class="progress protection" id="bar-protection" style="width: 100%"></div>
     </div>
     <!--<input class="slider" type="range" min="0" max="100" value="100" oninput="updateBar(this.value, 'protection')">-->
+  </div>
+
+  <div class="bar-container">
+    <img src="" style="width: 500px; height: 500px; objet-fit: contain" id="monstreImg" />
   </div>
 </body>
 </html>
